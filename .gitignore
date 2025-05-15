@@ -1,0 +1,13 @@
+.*
+_*
+*.db
+*.ipynb
+*.txt
+
+
+
+.env
+env.py
+
+!requirements.txt
+!.gitignore
