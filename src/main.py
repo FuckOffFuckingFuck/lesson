@@ -1,13 +1,13 @@
 
 import uvicorn
 from fastapi import FastAPI
+from sqlalchemy import select
 
 from models import Game
 from models import Provider
 from database import SessionDep
 from schemas import GameCreate
 from schemas import ProviderCreate
-from sqlalchemy import select
 
 
 app = FastAPI()

@@ -3,11 +3,9 @@ _*
 *.db
 *.ipynb
 *.txt
-
-
-
 .env
-env.py
+temp.*
+alembic*
 
 !requirements.txt
 !.gitignore
