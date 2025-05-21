@@ -2,10 +2,14 @@
 _*
 *.db
 *.ipynb
+*.pyc
+*.pyo
+*.egg-info
 *.txt
 .env
-temp.*
-alembic*
+__pycache__
 
 !requirements.txt
 !.gitignore
+!.dockerignore
+!README.md

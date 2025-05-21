@@ -1,7 +1,7 @@
 
 import uvicorn
 from fastapi import FastAPI
-from sqlalchemy import select
+# from sqlalchemy import select
 
 from models import Game
 from models import Provider
@@ -81,4 +81,4 @@ async def delete_game(game_id: int, session: SessionDep):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)
