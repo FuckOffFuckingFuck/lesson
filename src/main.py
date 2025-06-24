@@ -78,7 +78,7 @@ async def delete_game(game_id: int, session: SessionDep):
     await session.delete(db_game)
     await session.commit()
     return {"message": "Game deleted successfully", "deleted": db_game}
-
+print('dfldjgn')
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
