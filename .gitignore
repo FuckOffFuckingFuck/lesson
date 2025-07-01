@@ -2,12 +2,14 @@
 _*
 *.db
 *.ipynb
+*.pyc
+*.pyo
+*.egg-info
 *.txt
-
-
-
 .env
-env.py
+__pycache__
 
 !requirements.txt
 !.gitignore
+!.dockerignore
+!README.md
