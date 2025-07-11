@@ -3,7 +3,7 @@ import json
 
 from sqlalchemy import select
 
-from database import SessionDep   # fix "testdatabase" to "database"
+from database import SessionDep
 from models import Game
 from models import Provider
 from schemas import GameCreate
