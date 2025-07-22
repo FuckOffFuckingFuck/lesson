@@ -5,22 +5,9 @@ from sqlalchemy import String
 from sqlalchemy import Boolean
 from sqlalchemy import ForeignKey
 from sqlalchemy import Numeric
-from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import relationship
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-class Provider(Base):
-    __tablename__ = "providers"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), unique=True)
-    email = Column(String(255))
-
-    games = relationship("Game", back_populates="provider")
+from src.declarative_base import Base
 
 
 class Game(Base):

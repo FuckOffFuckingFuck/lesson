@@ -27,3 +27,9 @@ $ FLUSHDB
 ```sh
 $ docker run --name redis -d -p 6379:6379 redis
 ```
+
+# local run
+
+```sh
+$ python -m src.main
+```

@@ -7,9 +7,10 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
-from src.models import Provider
-from src.models import Game
-from src.models import Base
+from src.games.models import Game
+from src.providers.models import Provider
+from src.user.models import UserModel
+from src.declarative_base import Base
 from src.config import settings
 
 # this is the Alembic Config object, which provides
