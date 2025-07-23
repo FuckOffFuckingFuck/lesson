@@ -8,6 +8,9 @@ _*
 *.txt
 .env
 __pycache__
+redisdata
+*test*
+
 
 !requirements.txt
 !.gitignore

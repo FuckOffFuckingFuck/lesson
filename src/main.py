@@ -1,84 +1,85 @@
 
 import uvicorn
 from fastapi import FastAPI
-# from sqlalchemy import select
 
-from models import Game
-from models import Provider
 from database import SessionDep
-from schemas import GameCreate
-from schemas import ProviderCreate
+from cache import redis_client
+from service import check_chache
+from search import search_client
+
+# Импорты для тестовых ручек
+# from models import Game
+# from models import Provider
+# from schemas import GameCreate
+# from schemas import ProviderCreate
 
 
 app = FastAPI()
 
 
-@app.post("/providers/", tags=["Provider"])
-async def create_provider(data: ProviderCreate, session: SessionDep):
-    db_provider = Provider(name=data.name, email=data.email)
-    session.add(db_provider)
-    await session.commit()
-    return {"succses": True, "send": db_provider}
+@app.get("/search", tags=["Search"])
+async def search(session: SessionDep, query: str):
+    if query:
+        cache = await check_chache(query)
+        if cache:
+            return {
+                "success": True,
+                "msg": "Cache has been finded",
+                "cache": cache
+            }
+
+        await search_client.search(query, session)
+
+        json_res = await search_client.get_first_game(session)
+
+        if not json_res:
+            json_res = await search_client.get_first_provider(session)
+
+        if json_res:
+            await redis_client.setex(query, 1000, json_res)
+            return {
+                "success": True,
+                "msg": "Query has been cached",
+                "json_res": json_res
+            }
+    return {
+        "success": False,
+        "msg": "Enter some query",
+        "query": query
+    }
+
+# ручки для добавления данных в БД
+
+# @app.post("/providers/", tags=["Provider"])
+# async def create_provider(data: ProviderCreate, session: SessionDep):
+#     db_provider = Provider(name=data.name, email=data.email)
+#     session.add(db_provider)
+#     await session.commit()
+#     return {"succses": True, "send": db_provider}
 
 
-@app.get("/providers/{provider_id}", tags=["Provider"])
-async def read_provider(provider_id: int, session: SessionDep):
-    provider = await session.get(Provider, provider_id)
-    return {"succses": True, "id": provider_id, "send": provider}
+# @app.get("/providers/{provider_id}", tags=["Provider"])
+# async def read_provider(provider_id: int, session: SessionDep):
+#     provider = await session.get(Provider, provider_id)
+#     return {"succses": True, "id": provider_id, "send": provider}
 
 
-@app.put("/providers/{provider_id}", tags=["Provider"])
-async def update_provider(provider_id: int, data: ProviderCreate, session: SessionDep):
-    db_provider = await session.get(Provider, provider_id)
-    db_provider.name = data.name
-    db_provider.email = data.email
-    await session.commit()
-    return {"succses": True, "id": provider_id, "send": db_provider}
+# @app.post("/games/", tags=["Game"])
+# async def create_game(data: GameCreate, session: SessionDep):
+#     db_game = Game(
+#         title=data.title,
+#         price=data.price,
+#         provider_id=data.provider_id
+#     )
+#     session.add(db_game)
+#     await session.commit()
+#     return {"succses": True, "send": db_game}
 
 
-@app.delete("/providers/{provider_id}", tags=["Provider"])
-async def delete_provider(provider_id: int, session: SessionDep):
-    db_provider = await session.get(Provider, provider_id)
-    await session.delete(db_provider)
-    await session.commit()
-    return {"message": "Provider deleted successfully", "deleted": db_provider}
-
-
-@app.post("/games/", tags=["Game"])
-async def create_game(data: GameCreate, session: SessionDep):
-    db_game = Game(
-        title=data.title,
-        price=data.price,
-        provider_id=data.provider_id
-    )
-    session.add(db_game)
-    await session.commit()
-    return {"succses": True, "send": db_game}
-
-
-@app.get("/games/{game_id}", tags=["Game"])
-async def read_game(game_id: int, session: SessionDep):
-    game = await session.get(Game, game_id)
-    return {"succses": True, "id": game_id, "send": game}
-
-
-@app.put("/games/{game_id}", tags=["Game"])
-async def update_game(game_id: int, data: GameCreate, session: SessionDep):
-    db_game = await session.get(Game, game_id)
-    db_game.title = data.title
-    db_game.price = data.price
-    db_game.provider_id = data.provider_id
-    await session.commit()
-    return {"succses": True, "id": game_id, "send": db_game}
-
-
-@app.delete("/games/{game_id}", tags=["Game"])
-async def delete_game(game_id: int, session: SessionDep):
-    db_game = await session.get(Game, game_id)
-    await session.delete(db_game)
-    await session.commit()
-    return {"message": "Game deleted successfully", "deleted": db_game}
-
+# @app.get("/games/{game_id}", tags=["Game"])
+# async def read_game(game_id: int, session: SessionDep):
+#     game = await session.get(Game, game_id)
+#     return {"succses": True, "id": game_id, "send": game}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)
