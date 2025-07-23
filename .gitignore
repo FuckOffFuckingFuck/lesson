@@ -3,7 +3,6 @@
 *.pyc
 *.pyo
 *.egg-info
-*.txt
 __pycache__
 redisdata
 *test*

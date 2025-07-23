@@ -2,7 +2,7 @@
 
 services:
   db:
-    container_name: PostgreSQL
+    container_name: ${DB_NAME}
     image: postgres:latest
     env_file:
       - .env
