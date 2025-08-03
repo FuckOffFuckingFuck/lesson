@@ -1,7 +1,7 @@
 # # предназначено для локального тестирования приложения
 # # без докер образа и PostgreSQL
 
-# # python -m venv .venv --upgrage-deps
+# # python -m venv .venv --upgrade-deps
 # # .\.venv\Scripts\activate
 # # pip install aiosqlite
 
