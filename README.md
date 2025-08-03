@@ -40,9 +40,9 @@ $ FLUSHDB
 # async alembic
 
 ```sh
-alembic init -t async migration
-alembic revision --autogenerate -m "Some msg"
-alembic upgrade head
+$ alembic init -t async alembic
+$ alembic revision --autogenerate -m "Some msg"
+$ alembic upgrade head
 ```
 
 ## если проблемс с alembic и postgres, то проверить разрешение порта в брандмауэре:
@@ -64,7 +64,7 @@ $ New-NetFirewallRule -Name 'POSTGRESQL-In-TCP' -DisplayName 'PostgreSQL (TCP-In
 
 alembic ищет адрес не локально а так, как он указан внутри контейнера (при создании ревизии "alembic revision --autogenerate"):
 ```sh
-$ socket.gaierror: [Errno 11001] getaddrinfo failed
+socket.gaierror: [Errno 11001] getaddrinfo failed
 ```
 ### Решение:
 указать локальный порт вручную: (на месте localhost был db)
@@ -73,5 +73,5 @@ $ socket.gaierror: [Errno 11001] getaddrinfo failed
 
 ### хз поч:
 ```sh
-$ ModuleNotFoundError: No module named 'src'
+ModuleNotFoundError: No module named 'src'
 ```
