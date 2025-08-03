@@ -5,6 +5,9 @@
 # # .\.venv\Scripts\activate
 # # pip install aiosqlite
 
+
+# # src.database
+
 # from typing import Annotated
 # import asyncio
 
@@ -42,3 +45,13 @@
 #         # await conn.run_sync(Base.metadata.drop_all)
 #         await conn.run_sync(Base.metadata.create_all)
 # asyncio.run(init_db())
+
+
+
+# # src.declarative_base:
+
+# from sqlalchemy.orm import DeclarativeBase
+
+
+# class Base(DeclarativeBase):
+#     pass

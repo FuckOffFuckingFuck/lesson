@@ -12,6 +12,9 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "vim"]
+
 COPY . .
 
-CMD ["python", "src/main.py"]
+CMD [ "python", "-m", "src.main" ]

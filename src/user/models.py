@@ -4,7 +4,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Boolean
 
-from src.declarative_base import Base
+from src.database import Base
 
 
 class UserModel(Base):

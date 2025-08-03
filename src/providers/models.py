@@ -5,7 +5,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
-from src.declarative_base import Base
+from src.database import Base
 
 
 class Provider(Base):

@@ -7,7 +7,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Numeric
 from sqlalchemy.orm import relationship
 
-from src.declarative_base import Base
+from src.database import Base
 
 
 class Game(Base):
