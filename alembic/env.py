@@ -1,3 +1,6 @@
+# alembic env.py
+
+
 import asyncio
 from logging.config import fileConfig
 
@@ -16,10 +19,15 @@ from src.user.models import UserModel
 
 config = context.config
 
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)  # для Docker
-
 # config.set_main_option(
-#     "sqlalchemy.url", "postgresql+asyncpg://postgres:postgres@localhost:5432/pg_database")  # для ревизий
+#     "sqlalchemy.url",
+#     settings.DATABASE_URL
+# )  # для Docker ??
+
+config.set_main_option(
+    "sqlalchemy.url",
+    "postgresql+asyncpg://postgres:postgres@localhost:5432/pg_database"
+)  # для ревизий
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

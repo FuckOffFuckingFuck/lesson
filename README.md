@@ -4,6 +4,7 @@ Build docker-compose:
 ```sh
 $ docker compose up -d --build
 $ docker compose exec web alembic upgrade head
+$ alembic upgrade head
 ```
 
 <!-- [Check it](http://localhost:8000/docs) -->
@@ -75,3 +76,6 @@ socket.gaierror: [Errno 11001] getaddrinfo failed
 ```sh
 ModuleNotFoundError: No module named 'src'
 ```
+Вроде, помогает перезагрузка. 
+Всё сработало на "версии для ревизий".
+ревизию произвел 
