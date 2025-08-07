@@ -1,41 +1,42 @@
 
+from typing import Annotated
 from fastapi import APIRouter
+from fastapi import Depends
 
-from src.database import SessionDep
-from .cache import redis_client
-from .cache import check_chache
-from .search import search_client
-
+from .dependencies import game_service
+from .dependencies import provider_service
+from .dependencies import add_cache
+from .dependencies import cache_service
+from .dependencies import data_to_json
+from .services import GameSearchService
+from .services import ProviderSearchService
 
 router = APIRouter(prefix="/search", tags=["Search"])
 
 
 @router.get("/")
-async def search(session: SessionDep, query: str):
-    print(f"=== START ===")
-    if query:
-        # cache = await check_chache(query)
-        # if cache:
-        #     return {
-        #         "success": True,
-        #         "msg": "Cache has been finded",
-        #         "cache": cache
-        #     }
-
-        await search_client.search(query, session)
-
-        json_res = await search_client.get_all_game(session)
-
-        if not json_res:
-            json_res = await search_client.get_all_provider(session)
-
-        if json_res:
-            await redis_client.setex(query, 1000, json_res)
-            return {
-                "success": True,
-                "msg": "Query has been cached",
-                "json_res": json_res
-            }
+async def search(
+    provider_service: Annotated[ProviderSearchService, Depends(provider_service)],
+    game_service: Annotated[GameSearchService, Depends(game_service)],
+    query: str = Depends(cache_service)
+):
+    if isinstance(query, list):
+        return {
+            "success": True,
+            "msg": "Cache has been finded",
+            "json_res": query
+        }
+    if isinstance(query, str):
+        game_data = await game_service.search(query)
+        provider_data = await provider_service.search(query)
+        data = game_data + provider_data
+        json_data = await data_to_json(data)
+        await add_cache(query, json_data)
+        return {
+            "success": True,
+            "msg": "Query has been cached",
+            "data": game_data + provider_data,
+        }
     return {
         "success": False,
         "msg": "Enter some query",

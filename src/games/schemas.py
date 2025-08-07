@@ -17,3 +17,8 @@ class GameCreate(BaseModel):
     title: str = Field(max_length=200)
     price: float = Field(ge=0)
     provider_id: int
+
+
+class GameSchema(GameCreate):
+    id: int
+    is_published: bool

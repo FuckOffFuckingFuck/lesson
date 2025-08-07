@@ -17,19 +17,19 @@ async_engine = create_async_engine(
     pool_size=10,
     max_overflow=20
 )
-AsyncSessionLocal = async_sessionmaker(
+async_session_maker = async_sessionmaker(
     bind=async_engine,
     expire_on_commit=False,
     class_=AsyncSession
 )
 
 
-async def get_session():
-    async with AsyncSessionLocal() as session:
+async def get_async_session():
+    async with async_session_maker() as session:
         yield session
 
 
-SessionDep = Annotated[AsyncSession, Depends(get_session)]
+SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
 
 
 class Base(DeclarativeBase):
