@@ -4,7 +4,6 @@ Build docker-compose:
 ```sh
 $ docker compose up -d --build
 $ docker compose exec web alembic upgrade head
-$ alembic upgrade head
 ```
 
 <!-- [Check it](http://localhost:8000/docs) -->
