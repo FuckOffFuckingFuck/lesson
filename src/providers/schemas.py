@@ -17,3 +17,7 @@ class ProviderCreate(BaseModel):
 
     name: str = Field(max_length=100)
     email: EmailStr = Field(max_length=255)
+
+
+class ProviderSchema(ProviderCreate):
+    id: int

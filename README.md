@@ -4,7 +4,6 @@ Build docker-compose:
 ```sh
 $ docker compose up -d --build
 $ docker compose exec web alembic upgrade head
-$ alembic upgrade head
 ```
 
 <!-- [Check it](http://localhost:8000/docs) -->
@@ -63,11 +62,11 @@ $ New-NetFirewallRule -Name 'POSTGRESQL-In-TCP' -DisplayName 'PostgreSQL (TCP-In
 
 ## Возможные ошибки: 
 
-alembic ищет адрес не локально а так, как он указан внутри контейнера (при создании ревизии "alembic revision --autogenerate"):
+### alembic ищет адрес не локально а так, как он указан внутри контейнера (при создании ревизии "alembic revision --autogenerate"):
 ```sh
 socket.gaierror: [Errno 11001] getaddrinfo failed
 ```
-### Решение:
+Решение:
 указать локальный порт вручную: (на месте localhost был db)
 "postgresql+asyncpg://postgres:postgres@<ins>localhost</ins>:5432/pg_database"
 после этого не забыть вернуть адрес из src.config.settings.DATABASE_URL
@@ -79,3 +78,12 @@ ModuleNotFoundError: No module named 'src'
 Вроде, помогает перезагрузка. 
 Всё сработало на "версии для ревизий".
 ревизию произвел 
+
+версия для ревизий:
+```sh
+# # # alembic.env
+config.set_main_option(
+    "sqlalchemy.url",
+    "postgresql+asyncpg://postgres:postgres@localhost:5432/pg_database"
+)  # для ревизий
+```
