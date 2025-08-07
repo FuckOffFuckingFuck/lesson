@@ -3,11 +3,12 @@ import json
 
 from sqlalchemy import select
 
-from database import SessionDep
-from models import Game
-from models import Provider
-from schemas import GameCreate
-from schemas import ProviderCreate
+from src.database import SessionDep
+
+from src.games.models import Game
+from src.providers.models import Provider
+from src.games.schemas import GameCreate
+from src.providers.schemas import ProviderCreate
 
 
 class SearchTool():
@@ -82,4 +83,4 @@ class SearchTool():
         return None
 
 
-search_client = SearchTool()
+search_client = SearchTool()  # FIX: добавить везде экземпляры класса

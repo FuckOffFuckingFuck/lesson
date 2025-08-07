@@ -1,16 +1,12 @@
-.*
-_*
 *.db
 *.ipynb
 *.pyc
 *.pyo
 *.egg-info
-*.txt
-.env
 __pycache__
 redisdata
 *test*
-
+.venv
 
 !requirements.txt
 !.gitignore

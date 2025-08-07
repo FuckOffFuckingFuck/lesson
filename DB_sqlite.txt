@@ -1,0 +1,54 @@
+# # предназначено для локального тестирования приложения
+# # без докер образа и PostgreSQL
+
+# # python -m venv .venv --upgrade-deps
+# # .\.venv\Scripts\activate
+# # pip install aiosqlite
+
+
+# # src.database
+
+from typing import Annotated
+
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import DeclarativeBase
+
+
+async_engine = create_async_engine(url='sqlite+aiosqlite:///database.db')
+
+async_session_maker = async_sessionmaker(
+    bind=async_engine,
+    expire_on_commit=False,
+    class_=AsyncSession
+)
+
+
+async def get_async_session():
+    async with async_session_maker() as session:
+        yield session
+
+
+SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
+
+
+class Base(DeclarativeBase):
+    pass
+
+# # src.main.py:
+
+
+# # Добавить необходимые модели
+# from src.games.models import Game
+# from src.providers.models import Provider
+# from src.user.models import UserModel
+
+
+# if __name__ == "__main__":
+    # async def init_db():
+    #     async with async_engine.begin() as conn:
+    #         # await conn.run_sync(Base.metadata.drop_all)
+    #         await conn.run_sync(Base.metadata.create_all)
+    # asyncio.run(init_db())
